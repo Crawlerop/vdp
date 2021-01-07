@@ -318,7 +318,7 @@ class RoutesHandler():
 
         rt: routing.MapAdapter = self.routes.bind(ctx.hdata.header["headers"]["host"], url_scheme=scheme)
         try:
-            handler = rt.match(ctx.hdata.header["path"])
+            handler = rt.match(ctx.hdata.header["path"], method=ctx.hdata.header["method"])
         except routing.RequestRedirect as e:
             return 301, "", {"Location": e.new_url}
         except routing.WebsocketMismatch:

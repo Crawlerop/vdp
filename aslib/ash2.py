@@ -483,7 +483,7 @@ class H2RoutesHandler():
 
         rt = self.routes.bind(request_data.header["headers"]["host"], url_scheme=scheme)
         try:
-            handler = rt.match(request_data.header["path"])
+            handler = rt.match(request_data.header["path"], method=ctx.hdata.header["method"])
         except routing.RequestRedirect as e:
             return 301, "", {"Location": e.new_url}
         except routing.HTTPException as e:
