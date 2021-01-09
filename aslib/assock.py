@@ -88,7 +88,7 @@ class ASProtocol():
             pass
         except Exception as err:
             e = err
-            import traceback;
+            import traceback
             print("Error handling the connection:", file=stderr)
             traceback.print_exc()
 
