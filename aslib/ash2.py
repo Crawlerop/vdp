@@ -37,10 +37,11 @@ class H2Server(ASProtocol):
         self.has_length: DictType[int, bool] = {}
         self.write_end: DictType[int, bool] = {}
         self.sock = None
+        self.ip = ""
 
     async def connection(self, conn: ASSock):
         self.sock = conn
-        self.hdata.header["ip"] = conn.addr[0]
+        self.ip = conn.addr[0]
         self.conn.initiate_connection()
         self.conn.local_settings = h2.settings.Settings(
             client=False,
@@ -165,6 +166,8 @@ class H2Server(ASProtocol):
                     self.request_data[ev.stream_id].header["protocol"] = dr.get(":protocol")
 
                     self.request_data[ev.stream_id].header["scheme"] = dr[":scheme"]
+
+                    self.request_data[ev.stream_id].header["ip"] = self.ip
 
                     if len(dr[":path"]) > 8192:
                         await self._bail_out(ev.stream_id, 414)
